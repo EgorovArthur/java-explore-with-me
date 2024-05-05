@@ -18,12 +18,13 @@ import java.util.Map;
 public class StatClient extends BaseClient {
 
     @Autowired
-    public StatClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder builder) {
+    public StatClient(@Value("${stats-client.url}") String serverUrl, RestTemplateBuilder builder, ExceptionHandler exceptionHandler) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
                         .requestFactory(HttpComponentsClientHttpRequestFactory::new)
-                        .build()
+                        .build(),
+                exceptionHandler
         );
     }
 
