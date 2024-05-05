@@ -49,7 +49,7 @@ public class PublicEventServiceImpl implements PublicEventService {
                 () -> new EventNotFoundException("Событие с id " + id + " не найдено.")
         );
         validatePublishedEventsForGet(event);
-        ResponseEntity<Object> response = statClient.getStat(
+        ResponseEntity<Object> response = statClient.getViewStats(
                 event.getCreatedOn(),
                 LocalDateTime.now(),
                 List.of(request.getRequestURI()),
@@ -114,7 +114,7 @@ public class PublicEventServiceImpl implements PublicEventService {
     }
 
     private void saveHitForStatistic(HttpServletRequest request) {
-        statClient.addHit(HitDto.builder()
+        statClient.saveHit(HitDto.builder()
                 .timestamp(String.valueOf(LocalDateTime.now()))
                 .ip(request.getRemoteAddr())
                 .app(applicationName)
@@ -193,7 +193,7 @@ public class PublicEventServiceImpl implements PublicEventService {
         Map<Long, Long> viewStats = new HashMap<>();
 
         if (start != null) {
-            ResponseEntity<Object> response = statClient.getStat(
+            ResponseEntity<Object> response = statClient.getViewStats(
                     start,
                     LocalDateTime.now(),
                     uris,
