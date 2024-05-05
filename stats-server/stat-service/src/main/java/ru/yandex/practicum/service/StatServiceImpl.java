@@ -2,8 +2,10 @@ package ru.yandex.practicum.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.HitDto;
 import ru.yandex.practicum.StatDto;
+import ru.yandex.practicum.exception.BadRequestException;
 import ru.yandex.practicum.mapper.HitMapper;
 import ru.yandex.practicum.mapper.StatMapper;
 import ru.yandex.practicum.model.Stat;
@@ -21,12 +23,17 @@ public class StatServiceImpl implements StatService {
     private final StatMapper statMapper;
 
     @Override
+    @Transactional
     public void addHit(HitDto hitDto) {
         statRepository.save(hitMapper.toHit(hitDto));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<StatDto> getStat(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
+        if (start.isAfter(end)) {
+            throw new BadRequestException("Время окончания должно быть позднее времени начала!");
+        }
         List<Stat> stats;
         if (unique) {
             if (uris != null) {
