@@ -1,6 +1,5 @@
 package ru.yandex.practicum;
 
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -27,11 +26,8 @@ public class StatClient extends BaseClient {
         );
     }
 
-    public StatDto addHit(HitDto hitDto) {
-        Gson gson = new Gson();
-        ResponseEntity<Object> responseEntity = post("/hit", hitDto);
-        String json = gson.toJson(responseEntity.getBody());
-        return gson.fromJson(json, StatDto.class);
+    public ResponseEntity<Object> addHit(HitDto hitDto) {
+        return post("/hit", hitDto);
     }
 
     public ResponseEntity<Object> getStat(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
