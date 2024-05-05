@@ -6,6 +6,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.time.LocalDateTime;
@@ -26,7 +27,7 @@ public class StatClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> addHit(HitDto hitDto) {
+    public ResponseEntity<Object> addHit(@RequestBody HitDto hitDto) {
         return post("/hit", hitDto);
     }
 
