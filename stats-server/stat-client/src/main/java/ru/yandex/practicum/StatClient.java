@@ -17,29 +17,31 @@ import java.util.Map;
 public class StatClient extends BaseClient {
 
     @Autowired
-    public StatClient(@Value("${stats-client.url}") String serverUrl, RestTemplateBuilder builder) {
+    public StatClient(@Value("${stats-client.url}") String serverUrl, RestTemplateBuilder builder, ExceptionHandler exceptionHandler) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
                         .requestFactory(HttpComponentsClientHttpRequestFactory::new)
-                        .build()
+                        .build(),
+                exceptionHandler
         );
     }
 
-    public ResponseEntity<Object> addHit(HitDto hitDto) {
-        return post("/hit", hitDto);
+    public void addHit(HitDto hitDto) {
+        post("/hit", hitDto);
     }
 
     public ResponseEntity<Object> getStat(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String urisString = String.join(",", uris);
+//        String urisString = String.join(",", uris);
         Map<String, Object> parameters = Map.of(
                 "start", start.format(formatter),
                 "end", end.format(formatter),
-                "uris", urisString,
+                "uris", uris,
                 "unique", unique
         );
-        String path = "stats?start={start}&end={end}&uris={uris}&unique={unique}";
-        return get(path, parameters);
+
+//        String path = "/stats?start={start}&end={end}&uris={uris}&unique={unique}";
+        return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }
 }

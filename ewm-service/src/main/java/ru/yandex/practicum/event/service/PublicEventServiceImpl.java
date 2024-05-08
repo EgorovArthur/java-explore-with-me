@@ -24,6 +24,7 @@ import ru.yandex.practicum.request.service.RequestServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -114,8 +115,9 @@ public class PublicEventServiceImpl implements PublicEventService {
     }
 
     private void saveHitForStatistic(HttpServletRequest request) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         statClient.addHit(HitDto.builder()
-                .timestamp(String.valueOf(LocalDateTime.now()))
+                .timestamp(LocalDateTime.now().format(formatter))
                 .ip(request.getRemoteAddr())
                 .app(applicationName)
                 .uri(request.getRequestURI())

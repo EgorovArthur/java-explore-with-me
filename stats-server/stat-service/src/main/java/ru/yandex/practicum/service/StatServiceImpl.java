@@ -1,6 +1,7 @@
 package ru.yandex.practicum.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.HitDto;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class StatServiceImpl implements StatService {
     private final StatRepository statRepository;
@@ -48,6 +50,8 @@ public class StatServiceImpl implements StatService {
                 stats = statRepository.getAllStat(start, end);
             }
         }
-        return stats.stream().map(statMapper::toStatDto).collect(Collectors.toList());
+        List<StatDto> statistics = stats.stream().map(statMapper::toStatDto).collect(Collectors.toList());
+        log.info("Возращена статистика по просмотрам: {}", statistics);
+        return statistics;
     }
 }
