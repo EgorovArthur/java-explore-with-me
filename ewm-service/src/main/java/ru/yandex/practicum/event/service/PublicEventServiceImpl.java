@@ -136,7 +136,6 @@ public class PublicEventServiceImpl implements PublicEventService {
         } else {
             throw new EventBadRequestException("Сортировка может быть задана либо по просмотрам, либо по дате события");
         }
-
         return page;
     }
 
