@@ -117,7 +117,6 @@ public class PublicEventServiceImpl implements PublicEventService {
     private void saveHitForStatistic(HttpServletRequest request) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String timestampString = LocalDateTime.now().format(formatter);
-        LocalDateTime timestamp = LocalDateTime.parse(timestampString, formatter);
         statClient.addHit(HitDto.builder()
                 .timestamp(timestampString)
                 .ip(request.getRemoteAddr())

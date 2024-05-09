@@ -33,15 +33,12 @@ public class StatClient extends BaseClient {
 
     public ResponseEntity<Object> getStat(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        String urisString = String.join(",", uris);
         Map<String, Object> parameters = Map.of(
                 "start", start.format(formatter),
                 "end", end.format(formatter),
                 "uris", uris,
                 "unique", unique
         );
-
-//        String path = "/stats?start={start}&end={end}&uris={uris}&unique={unique}";
         return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }
 }
