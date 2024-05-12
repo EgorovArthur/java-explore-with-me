@@ -8,5 +8,5 @@ import lombok.Data;
 public class StatDto {
     private String app;
     private String uri;
-    private long hits;
+    private Long hits;
 }
