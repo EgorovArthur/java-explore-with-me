@@ -16,6 +16,7 @@ import ru.yandex.practicum.event.dto.UpdateEventUserRequest;
 import ru.yandex.practicum.event.mapper.EventMapper;
 import ru.yandex.practicum.event.model.Event;
 import ru.yandex.practicum.event.repository.EventRepository;
+import ru.yandex.practicum.exceptions.CommentConflictException;
 import ru.yandex.practicum.exceptions.EventBadRequestException;
 import ru.yandex.practicum.exceptions.EventConflictException;
 import ru.yandex.practicum.exceptions.EventNotFoundException;
@@ -171,6 +172,12 @@ public class PrivateEventServiceImpl implements PrivateEventService {
             } else if (state.equals(CANCEL_REVIEW)) {
                 event.setState(CANCELED);
             }
+        }
+    }
+
+    public void validateEventToAddComment(Event event) {
+        if (event.getState() != PUBLISHED) {
+            throw new CommentConflictException("Невозможно оставить комментарий на неопубликованное событие");
         }
     }
 }
